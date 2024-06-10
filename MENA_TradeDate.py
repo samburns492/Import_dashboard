@@ -1,5 +1,16 @@
 import pandas as pd
 
+def pull_api(country_names: dict) -> list:
+    df_lst = []
+
+    for key, value in country_names.items():
+        new_df = pd.DataFrame
+        new_df = pd.read_json('https://api.census.gov/data/timeseries/intltrade/imports/hs?get=I_COMMODITY,I_COMMODITY_LDESC,GEN_VAL_MO,GEN_VAL_YR&time=2013-03&CTY_CODE=' + str(value))
+        df_lst.append(new_df)
+        print(value)
+    return df_lst
+
+
 def main():
     country_code = {'Algeria':7210,
                     'Bahrain':5250,
@@ -20,13 +31,17 @@ def main():
                     'UAE':5200,
                     'Yemen':5210
                     }
+    
+
+
+    result_arr = pull_api(country_code)
+    print("Pulled result")
 
     cty_code = pd.Series(country_code)
     cty_code.to_csv('cty_code.csv', index=False)
 
-    print(cty_code)
     # #Algeria
-    df_algeria = pd.read_json('https://api.census.gov/data/timeseries/intltrade/imports/hs?get=I_COMMODITY,I_COMMODITY_LDESC,GEN_VAL_MO,GEN_VAL_YR&time=2013-03&CTY_CODE=' + str(cty_code['Algeria']))
+    # df_algeria = pd.read_json('https://api.census.gov/data/timeseries/intltrade/imports/hs?get=I_COMMODITY,I_COMMODITY_LDESC,GEN_VAL_MO,GEN_VAL_YR&time=2013-03&CTY_CODE=' + str(cty_code['Algeria']))
     # #Bahrain
     # df_bahrain = pd.read_json('https://api.census.gov/data/timeseries/intltrade/imports/hs?get=I_COMMODITY,I_COMMODITY_LDESC,GEN_VAL_MO,GEN_VAL_YR&time=2013-03&CTY_CODE=5250')
     # #Egypt
@@ -85,10 +100,9 @@ def main():
     #                    df_tunisia,
     #                    df_uae,
     #                    df_yemen]
-    # result = pd.concat(result_arr)
-    print(df_algeria)
+    result = pd.concat(result_arr)
     # print(result.describe())
-    # result.to_csv('result_mena.csv', index=False)
+    result.to_csv('result_mena.csv', index=False)
     
 if __name__ == '__main__':
     main()
