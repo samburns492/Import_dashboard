@@ -5,9 +5,12 @@ def pull_api(country_names: dict) -> list:
 
     for key, value in country_names.items():
         new_df = pd.DataFrame
-        new_df = pd.read_json('https://api.census.gov/data/timeseries/intltrade/imports/hs?get=I_COMMODITY,GEN_VAL_MO,GEN_VAL_YR&time=2013-03&CTY_CODE=' + str(value))
+        new_df = pd.read_json('https://api.census.gov/data/timeseries/intltrade/imports/hs?get=I_COMMODITY,GEN_VAL_MO,GEN_VAL_YR&time=2013-03&COMM_LVL=HS2&CTY_CODE=' + str(value))
+        
+        new_df.sort_values(by=[0],inplace=True,na_position='first')
+        
         df_lst.append(new_df)
-        print(value)
+      
     return df_lst
 
 
